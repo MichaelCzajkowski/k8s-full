@@ -23,3 +23,13 @@ kubectl get endpoints
 kubectl get endpoints
 kubectl apply -f external-service.yaml
 ```
+
+# moje
+
+```sh
+kubectl get endpoints
+kubectl get svc
+```
+
+
+
