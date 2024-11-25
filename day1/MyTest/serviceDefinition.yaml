@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-test-service1
+spec:
+  selector:
+    app: my-test-app1
+  ports:
+  - protocol: TCP
+    port: 6005
+  type: NodePort
