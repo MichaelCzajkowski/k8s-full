@@ -10,7 +10,7 @@ spec:
   volumes:
   - name: host-path
     hostPath:
-      path: /files
+      path: /run/desktop/mnt/host/c/szkolenie/Pliki
 # In Windows use this path (after modifying) `/run/desktop/mnt/host/c/path/to/file`
   containers:
   - name: host-path-pod-bb

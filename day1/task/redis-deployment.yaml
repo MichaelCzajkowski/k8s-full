@@ -21,9 +21,17 @@ spec:
         resources: {}
         ports:
         - containerPort: 6379
+          name: redis
         livenessProbe:
           exec:
             command: ["redis-cli", "ping"]
         readinessProbe:
           tcpSocket:
             port: 6379
+        volumeMounts:
+          - mountPath: /data
+            name: redis-data
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-pvc
