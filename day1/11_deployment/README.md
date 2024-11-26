@@ -59,3 +59,5 @@ kubectl exec -ti $(kubectl get pods -l app=myapp -o jsonpath='{.items[0].metadat
 kubectl logs -l app=myapp
 kubectl get rs
 ```
+lbl deplomentu 6 linika moze nie być 
+11 i 16 linika musi miec ten sam labale

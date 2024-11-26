@@ -7,5 +7,5 @@ metadata:
 spec:
   containers:
   - name: myapp-contatiner
-  - image: krajewskim/python-api:new
+    image: krajewskim/python-api:new
 

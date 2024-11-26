@@ -3,8 +3,8 @@ kind: Pod
 metadata:
   name: my-test-pod1
   labels:
-    name: my-test-app1
+    app: my-test-app1
 spec:
   containers:
-  - name: myapp-contatiner
+  - name: myapp-container
     image: krajewskim/python-api:new
