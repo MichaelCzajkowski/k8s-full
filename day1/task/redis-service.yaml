@@ -5,6 +5,7 @@ metadata:
   labels:
     projekt: python
 spec:
+  clusterIP: None
   selector:
     app: redis
   ports:

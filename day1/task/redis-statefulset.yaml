@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  labels:
+    projekt: python
+spec:
+  serviceName: redis-service
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        projekt: python
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+        resources: {}
+        ports:
+        - containerPort: 6379
+          name: redis
+        livenessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+        readinessProbe:
+          tcpSocket:
+            port: 6379
+        volumeMounts:
+          - mountPath: /data
+            name: redis-data
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-data
+      labels:
+        projekt: python
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Mi
