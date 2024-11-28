@@ -3,6 +3,9 @@ https://github.com/kubernetes-sigs/metrics-server
 
 ```sh
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+ściągnąc yaml i dodać do args
+--kubelet-insecure-tls
 ```
 
 kubectl edit deployment metrics-server -n kube-system

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python
+  labels:
+    projekt: python
+spec:
+  replicas: 4
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: python
+  template:
+    metadata:
+      labels:
+        app: python
+        projekt: python
+    spec:
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - python
+      #       topologyKey: kubernetes.io/hostname
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: python
+      enableServiceLinks: false
+      containers:
+      - name: python-api
+        image: krajewskim/python-api:new
+        resources: {}
+        ports:
+          - containerPort: 5002
+            name: api
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: api
+        readinessProbe:
+          tcpSocket:
+            port: api
+        envFrom:
+          - configMapRef:
+              name: python-cm
