@@ -1,0 +1,33 @@
+{{- range $name, $schedule := .Values.cronJob }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "python-api.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "python-api.labels" $ | nindent 4 }}
+  annotations:
+    purpose: "Automatyczny podbijacz licznika pythona"
+spec:
+  successfulJobsHistoryLimit: 1
+  concurrencyPolicy: Replace
+  schedule: {{ $schedule | default "* * * * *" | quote }}
+  jobTemplate:
+    metadata:
+      labels:
+        {{- include "python-api.labels" $ | nindent 8 }}
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "python-api.labels" $ | nindent 12 }}
+        spec:
+          containers:
+          - name: counter
+            image: cmd.cat/curl
+            command:
+            - curl
+            - -XPOST
+            - {{ include "python-api.fullname" $ }}-app/api/v1/info
+          restartPolicy: Never
+{{- end }}

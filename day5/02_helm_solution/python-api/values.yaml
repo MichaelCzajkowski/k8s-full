@@ -1,0 +1,25 @@
+registry: 
+python:
+  logLevel: INFO
+  replicas: 1
+  image:
+    name: krajewskim/python-api
+    tag: new
+  resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+cronJob:
+  cron1: "* * * * *"
+  cron2: "*/2 * * * *"
+
+ingress:
+  host: api.127.0.0.1.nip.io
+  className: nginx
+
+pvc:
+  storageClassName:

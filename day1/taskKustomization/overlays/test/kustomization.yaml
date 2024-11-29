@@ -7,6 +7,6 @@ resources:
 - ../../bases
 
 namespace: test
-# patches:
-# patches:
-# - path: patch_python_service.yaml
+patches:
+patches:
+- path: patch_python_service.yaml

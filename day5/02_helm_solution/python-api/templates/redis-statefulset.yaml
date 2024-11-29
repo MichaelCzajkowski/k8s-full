@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "python-api.fullname" . }}
+  labels:
+    {{- include "python-api.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "python-api.fullname" . }}-db
+  selector:
+    matchLabels:
+      {{- include "python-api.selectorLabels" . | nindent 6 }}
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        {{- include "python-api.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+        resources: {}
+        ports:
+        - containerPort: 6379
+          name: redis
+        livenessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+        readinessProbe:
+          tcpSocket:
+            port: 6379
+        volumeMounts:
+          - mountPath: /data
+            name: {{ include "python-api.fullname" . }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ include "python-api.fullname" . }}
+      labels:
+        {{- include "python-api.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.pvc.storageClassName }}
+      storageClassName: {{ . }}
+      {{- end }}
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Mi
